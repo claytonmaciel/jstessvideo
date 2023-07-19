@@ -28,10 +28,13 @@
     const lerImagemBtn = document.getElementById('ler-imagem');
     const capturarBtn = document.getElementById('capturar');
     const resultadoDiv = document.getElementById('resultado');
-    let video, canvas, context, stream;
+    let video, canvas, context, stream, img;
 
     // Função para abrir a câmera do dispositivo
     function abrirCamera() {
+
+      resetarVideo();
+
       const constraints = {
         video: { facingMode: 'environment'},
         audio: false
@@ -74,7 +77,7 @@
       //console.log(imageData);
 
        // Inverter a imagem horizontalmente
-      const img = document.createElement('img');
+      img = document.createElement('img');
       img.src = imageData;
       //img.style.transform = 'scaleX(-1)';
       img.style.width = '100%';
@@ -112,6 +115,18 @@
         lerImagemBtn.disabled = false;
         capturarBtn.disabled = true;
         console.log('Câmera fechada!');
+      }
+    }
+
+    function resetarVideo() {
+      if (video) {
+        video.pause();
+        video.srcObject = null;
+        video.remove();
+        video = null;
+        resultadoDiv.textContent = "";
+        img.remove();
+        img = null;
       }
     }
 
