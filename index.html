@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>Projeto Integrador</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
   <style>
     
     #preview {
@@ -13,140 +15,155 @@
       //transform: scaleX(-1);
     }
   </style>
+
+  
+
+  <title>Projeto Inclusão IFMO</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Krub:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Bikin
+  * Updated: May 30 2023 with Bootstrap v5.3.0
+  * Template URL: https://bootstrapmade.com/bikin-free-simple-landing-page-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
+
 <body>
-  <h1>Projeto Educação Inclusiva IFMO</h1>
 
-  <button id="ler-imagem">Ler Imagem</button>
-  <button id="capturar" disabled>Capturar</button>
-  <br><br>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
 
-  <div id="resultado"></div>
+      <h1 class="logo"><a href="index.html">Projeto Inclusão - IFMO</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
-  <script>
-    const lerImagemBtn = document.getElementById('ler-imagem');
-    const capturarBtn = document.getElementById('capturar');
-    const resultadoDiv = document.getElementById('resultado');
-    let video, canvas, context, stream, img;
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
+          
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
 
-    // Função para abrir a câmera do dispositivo
-    function abrirCamera() {
+    </div>
+  </header><!-- End Header -->
 
-      resetarVideo();
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center">
 
-      const constraints = {
-        video: { facingMode: 'environment'},
-        audio: false
-      };
-
-      navigator.mediaDevices.getUserMedia(constraints)
-        .then(function(mediaStream) {
-          stream = mediaStream;
-          video = document.createElement('video');
-          video.id = 'preview';
-          document.body.appendChild(video);
-          video.srcObject = mediaStream;
-          video.play();
-          video.onloadedmetadata = function(e) {
-            console.log('Câmera aberta!');
-            lerImagemBtn.disabled = true;
-            capturarBtn.disabled = false;
-            document.getElementById('preview').style.display = 'block';
-          };
-        })
-        .catch(function(err) {
-          console.error('Erro ao abrir a câmera: ', err);
-        });
-    }
-
-    // Função para capturar a imagem do vídeo
-    function capturarImagem() {
-      canvas = document.createElement('canvas');
-      context = canvas.getContext('2d');
-
-      const width = video.videoWidth;
-      const height = video.videoHeight;
-      canvas.width = width;
-      canvas.height = height;
-
-      //context.translate(width, 0);
-      //context.scale(-1, 1);
-      context.drawImage(video, 0, 0, width, height);
-      const imageData = canvas.toDataURL('image/png');
-      //console.log(imageData);
-
-       // Inverter a imagem horizontalmente
-      img = document.createElement('img');
-      img.src = imageData;
-      //img.style.transform = 'scaleX(-1)';
-      img.style.width = '100%';
-      document.body.appendChild(img);
-
-      converterImagem(imageData);
+    <div class="container d-flex flex-column align-items-center justify-content-center" data-aos="fade-up">
+      <h1>Projeto de Inclusão para Deficientes Visuais</h1>
+      <h2>Este projeto visa empoderar e possibilitar uma experiência igualitária, proporcionando acesso ao conhecimento e à informação através de tecnologias acessíveis e amigáveis ao universo das pessoas com deficiência visual.</h2>
+      <a id="ler-imagem" href="teste.html" class="btn-get-started scrollto">Testar</a>
       
-    }
+      <img src="assets/img/hero-img.png" class="img-fluid hero-img" alt="" data-aos="zoom-in" data-aos-delay="150">
+    </div>
 
-    // Função para converter a imagem em texto
-    function converterImagem(textoImagem) {
-      Tesseract.recognize(textoImagem, 'por')
-        .then(function(result) {
-          const textoConvertido = result.data.text;
-          resultadoDiv.textContent = textoConvertido;
-          
-          
-          lerTexto(textoConvertido);
-          fecharCamera(); // Chamar a função para fechar a câmera
-          /*const link = document.createElement('a');
-          link.href = textoConvertido;
-          link.download = 'imagem.png';
-          link.click(); */
-        })
-        .catch(function(err) {
-          console.error('Erro ao converter a imagem: ', err);
-        });
-    }
+  </section><!-- End Hero -->
 
-    function fecharCamera() {
-      if (stream) {
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-        document.getElementById('preview').style.display = 'none';
-        lerImagemBtn.disabled = false;
-        capturarBtn.disabled = true;
-        console.log('Câmera fechada!');
-      }
-    }
+  <main id="main">
 
-    function resetarVideo() {
-      if (video) {
-        video.pause();
-        video.srcObject = null;
-        video.remove();
-        video = null;
-        resultadoDiv.textContent = "";
-        img.remove();
-        img = null;
-      }
-    }
 
-    // Função para ler o texto em formato de áudio
-    function lerTexto(texto) {
-      const utterance = new SpeechSynthesisUtterance();
-      utterance.text = texto;
-      speechSynthesis.speak(utterance);
-    }
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container">
 
-    // Evento de clique do botão "Ler Imagem"
-    lerImagemBtn.addEventListener('click', function() {
-      abrirCamera();
-    });
+        <div class="row no-gutters">
+          <div class="content col-xl-12 d-flex align-items-stretch" data-aos="fade-right">
+            <div class="content">
+              <h3>Sobre o desenvolvedor</h3>
+              <p>
+                Possuo Graduação em Ciência da Computação pela Universidade do Estado do Rio Grande do Norte (2006), Mestrado em Ciência da Computação pela Universidade Federal do Ceará (2009) e Doutorado em Ciência da Computação pela Universidade do Minho/Portugal (2017), reconhecido no programa de mestrado e doutorado em ciência da computação (MDCC) pela Universidade Federal do Ceará. Atualmente sou professor de Sistemas de Informação do Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte (IFRN). Tenho experiência na área de Ciência da Computação, com ênfase em linguagens de programação, bancos de dados, projetos educacionais e sistemas operacionais e sistemas operacionais de redes, atuando principalmente nos seguintes temas: computação em nuvem, processamento e otimização em bases de dados SQL e NoSQL (OD) e desenvolvimento de sistemas, com ênfase em sistemas educacionais e acadêmicos inclusivos.
+              </p>
+              
+            </div>
+          </div>
+          <div class="col-xl-12 d-flex align-items-stretch" data-aos="fade-left">
+            <div class="icon-boxes d-flex flex-column justify-content-center">
+              <div class="row">
+                <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="100">
+                  <i class="bx bx-receipt"></i>
+                  <h4>Canal do Youtube</h4>
+                  <p><a href="https://www.youtube.com/@claytonmaciel">Youtube</a></p>
+                </div>
+                <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="200">
+                  <i class="bx bx-cube-alt"></i>
+                  <h4>Lattes</h4>
+                  <p><a href="https://lattes.cnpq.br/8139557309724726">Lattes</a></p>
+                </div>
+                
+              </div>
+            </div><!-- End .content-->
+          </div>
+        </div>
 
-    // Evento de clique do botão "Capturar"
-    capturarBtn.addEventListener('click', function() {
-      capturarImagem();
-    });
-  </script>
+      </div>
+    </section><!-- End About Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+        <div class="copyright">
+          &copy; Copyright <strong><span></span></strong>. Todos os direitos Reservados
+        </div>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/bikin-free-simple-landing-page-template/ -->
+          Desenvolvido por <a href="https://www.youtube.com/@claytonmaciel">Clayton Maciel</a><br>
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+      </div>
+    
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  
 
 </body>
+
 </html>

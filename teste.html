@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Projeto Inclusão - IFMO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    
+    #preview {
+      width: 100%;
+      height: auto;
+      display: none;
+      
+      //transform: scaleX(-1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Projeto Inclusão - IFMO</h1>
+
+  <button id="ler-imagem">Ler Imagem</button>
+  <button id="capturar" disabled>Capturar</button>
+  <br><br>
+
+  <div id="resultado"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+  <script>
+    const lerImagemBtn = document.getElementById('ler-imagem');
+    const capturarBtn = document.getElementById('capturar');
+    const resultadoDiv = document.getElementById('resultado');
+    let video, canvas, context, stream, img;
+
+    // Função para abrir a câmera do dispositivo
+    function abrirCamera() {
+
+      resetarVideo();
+
+      const constraints = {
+        video: { facingMode: 'environment'},
+        audio: false
+      };
+
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(mediaStream) {
+          stream = mediaStream;
+          video = document.createElement('video');
+          video.id = 'preview';
+          document.body.appendChild(video);
+          video.srcObject = mediaStream;
+          video.play();
+          video.onloadedmetadata = function(e) {
+            console.log('Câmera aberta!');
+            lerImagemBtn.disabled = true;
+            capturarBtn.disabled = false;
+            document.getElementById('preview').style.display = 'block';
+          };
+        })
+        .catch(function(err) {
+          console.error('Erro ao abrir a câmera: ', err);
+        });
+    }
+
+    // Função para capturar a imagem do vídeo
+    function capturarImagem() {
+      canvas = document.createElement('canvas');
+      context = canvas.getContext('2d');
+
+      const width = video.videoWidth;
+      const height = video.videoHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      //context.translate(width, 0);
+      //context.scale(-1, 1);
+      context.drawImage(video, 0, 0, width, height);
+      const imageData = canvas.toDataURL('image/png');
+      //console.log(imageData);
+
+       // Inverter a imagem horizontalmente
+      img = document.createElement('img');
+      img.src = imageData;
+      //img.style.transform = 'scaleX(-1)';
+      img.style.width = '100%';
+      document.body.appendChild(img);
+
+      converterImagem(imageData);
+      
+    }
+
+    // Função para converter a imagem em texto
+    function converterImagem(textoImagem) {
+      Tesseract.recognize(textoImagem, 'por')
+        .then(function(result) {
+          const textoConvertido = result.data.text;
+          resultadoDiv.textContent = textoConvertido;
+          
+          
+          lerTexto(textoConvertido);
+          fecharCamera(); // Chamar a função para fechar a câmera
+          /*const link = document.createElement('a');
+          link.href = textoConvertido;
+          link.download = 'imagem.png';
+          link.click(); */
+        })
+        .catch(function(err) {
+          console.error('Erro ao converter a imagem: ', err);
+        });
+    }
+
+    function fecharCamera() {
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        document.getElementById('preview').style.display = 'none';
+        lerImagemBtn.disabled = false;
+        capturarBtn.disabled = true;
+        console.log('Câmera fechada!');
+      }
+    }
+
+    function resetarVideo() {
+      if (video) {
+        video.pause();
+        video.srcObject = null;
+        video.remove();
+        video = null;
+        resultadoDiv.textContent = "";
+        img.remove();
+        img = null;
+      }
+    }
+
+    // Função para ler o texto em formato de áudio
+    function lerTexto(texto) {
+      const utterance = new SpeechSynthesisUtterance();
+      utterance.text = texto;
+      speechSynthesis.speak(utterance);
+    }
+
+    // Evento de clique do botão "Ler Imagem"
+    lerImagemBtn.addEventListener('click', function() {
+      abrirCamera();
+    });
+
+    // Evento de clique do botão "Capturar"
+    capturarBtn.addEventListener('click', function() {
+      capturarImagem();
+    });
+  </script>
+
+</body>
+</html>
