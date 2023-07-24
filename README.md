@@ -6,8 +6,6 @@ Testado e funcional no google chrome.
 Dica: Use facingMode: { exact: "user" } para câmera frontal ou facingMode: { exact: "environment" } para a câmera traseira do celular.
 
 Imagens teste:
-<img src="imagem1.jpeg"></img>
-<img src="imagem2.jpeg"></img>
 <img src="imagem3.png"></img>
 <img src="imagem4.webp"></img>
 <img src="imagem5.webp"></img>
